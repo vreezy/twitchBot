@@ -77,6 +77,33 @@ function slotMachine(slotValues, name) {
 }
 const arr = [];
 
+function getDummy() {
+	
+	return {
+		"badge-info": null,
+		"badges": {
+			"broadcaster": "1"
+		},
+		"color": null,
+		"display-name": "bot" + rollDice(100, 999),
+		"emotes": null,
+		"flags": null,
+		"id": "000",
+		"mod": false,
+		"room-id": "191308898",
+		"subscriber": false,
+		"tmi-sent-ts": "1588447795179",
+		"turbo": false,
+		"user-id": "191308898",
+		"user-type": null,
+		"emotes-raw": null,
+		"badge-info-raw": null,
+		"badges-raw": "broadcaster/1",
+		"username": "bot",
+		"message-type": "chat"
+	}
+}
+
 client.connect();
 
 client.on('message', (channel, tags, message, self) => {
@@ -125,6 +152,14 @@ client.on('message', (channel, tags, message, self) => {
 
 	if(message.toLowerCase() === '!fight') {
 		arr.push(tags);
+		arr.push(getDummy());
+		arr.push(getDummy());
+		arr.push(getDummy());
+		arr.push(getDummy());
+		arr.push(getDummy());
+		arr.push(getDummy());
+		arr.push(getDummy());
+		arr.push(getDummy());
 		console.log(tags)
 	}
 	
@@ -136,9 +171,11 @@ var express = require('express');
 var app = express();
 
 app.get('/', function (req, res) {
-  res.json(arr);
+	res.header('Access-Control-Allow-Origin', "*");
+	res.header('Access-Control-Allow-Headers', "*");
+  	res.json(arr);
 });
 
 app.listen(8080, function () {
-  console.log('Example app listening on port 3000!');
+ 
 });
