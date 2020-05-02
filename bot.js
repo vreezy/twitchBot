@@ -20,6 +20,60 @@ const client = new tmi.Client({
 	channels: [ process.env.XCHANNEL ]
 });
 
+function rollDice(min, max) {
+	return min + Math.floor(Math.random() * (max-min + 1))
+}
+
+function coinToss() {
+	return rollDice(1, 2) > 1 ? "Kopf" : "Zahl";
+}
+
+function slotValues() {
+	return [rollDice(1,9), rollDice(1,9), rollDice(1,9)];
+}
+
+function slotView(slotValues) {
+	return slotValues.map(value => {
+		switch(value) {
+			case 1:
+				return "🌞";
+			case 2:
+				return "🎱";
+			case 3:
+				return "🧻";
+			case 4:
+				return "💎";
+			case 5:
+				return "🔔";
+			case 6:
+				return "🎵";
+			case 7:
+				return "💲";
+			case 8:
+				return "🎠";
+			default:
+			case 9:
+				return "🧊";				
+		}
+	}).join("");
+}
+
+function slotMachine(slotValues, name) {
+	if(slotValues[0] === 9 && slotValues[1] === 9 && slotValues[2] === 9) {
+		return `🎰 @${name}, zieht am Hebel und erhält ${slotView(slotValues)}. Ice Ice Baby!`
+	}
+
+	if(slotValues[0] === 5 && slotValues[1] === 5 && slotValues[2] === 5) {
+		return `🎰 @${name}, zieht am Hebel und erhält ${slotView(slotValues)} und läßt die Glocken leuten!`
+	}
+
+	if(slotValues[0] === 7 && slotValues[1] === 7 && slotValues[2] === 7) {
+		return `🎰 @${name}, zieht am Hebel und erhält ${slotView(slotValues)} und hat damit den 💲JACKPOT💲 geknackt!`
+	}
+
+	return `🎰 @${name}, zieht am Hebel und erhält ${slotView(slotValues)}.`
+}
+
 client.connect();
 
 client.on('message', (channel, tags, message, self) => {
@@ -48,7 +102,26 @@ client.on('message', (channel, tags, message, self) => {
 
     if(message.toLowerCase() === '!instagram' || message.toLowerCase() === '!insta') {
 		client.say(channel, `Hallo @${tags.username}, hier ist mein Instagram Account : https://www.instagram.com/vreezy.de/`);
-    }
+	}
+	
+	if(message.toLowerCase() === '!dice' || message.toLowerCase() === '!dice6') {
+		client.say(channel, `🎲 @${tags.username}, würfelt eine ${rollDice(1, 6)}`);
+	}
+	
+	if(message.toLowerCase() === '!dice20') {
+		client.say(channel, `🎲 @${tags.username}, würfelt eine ${rollDice(1, 20)}`);
+	}
+	
+	if(message.toLowerCase() === '!coin') {
+		client.say(channel, `🎲 @${tags.username}, wirft ${coinToss()}`);
+	}
+	
+
+	if(message.toLowerCase() === '!slot') {
+
+		client.say(channel, slotMachine(slotValues(), tags.username));
+	}
+	
 
 });
 	
