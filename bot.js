@@ -1,6 +1,8 @@
 const tmi = require('tmi.js');
 const dotenv = require('dotenv');
+
 dotenv.config();
+
 
 // docu
 // https://dev.twitch.tv/docs/irc
@@ -73,6 +75,7 @@ function slotMachine(slotValues, name) {
 
 	return `🎰 @${name}, zieht am Hebel und erhält ${slotView(slotValues)}.`
 }
+const arr = [];
 
 client.connect();
 
@@ -115,13 +118,27 @@ client.on('message', (channel, tags, message, self) => {
 	if(message.toLowerCase() === '!coin') {
 		client.say(channel, `🎲 @${tags.username}, wirft ${coinToss()}`);
 	}
-	
 
 	if(message.toLowerCase() === '!slot') {
-
 		client.say(channel, slotMachine(slotValues(), tags.username));
+	}
+
+	if(message.toLowerCase() === '!fight') {
+		arr.push(tags);
+		console.log(tags)
 	}
 	
 
 });
 	
+
+var express = require('express');
+var app = express();
+
+app.get('/', function (req, res) {
+  res.json(arr);
+});
+
+app.listen(8080, function () {
+  console.log('Example app listening on port 3000!');
+});
