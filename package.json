@@ -1,0 +1,24 @@
+{
+  "name": "twitchbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "tmi.js": "^1.5.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vreezy/twitchBot.git"
+  },
+  "author": "vreezy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vreezy/twitchBot/issues"
+  },
+  "homepage": "https://github.com/vreezy/twitchBot#readme"
+}
