@@ -173,7 +173,8 @@ var app = express();
 app.get('/', function (req, res) {
 	res.header('Access-Control-Allow-Origin', "*");
 	res.header('Access-Control-Allow-Headers', "*");
-  	res.json(arr);
+	res.json(arr);
+	// arr = []
 });
 
 app.listen(8080, function () {
