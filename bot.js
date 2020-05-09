@@ -157,9 +157,9 @@ client.on('message', (channel, tags, message, self) => {
 		arr.push(getDummy());
 		arr.push(getDummy());
 		arr.push(getDummy());
-		arr.push(getDummy());
-		arr.push(getDummy());
-		arr.push(getDummy());
+		// arr.push(getDummy());
+		// arr.push(getDummy());
+		// arr.push(getDummy());
 		console.log(tags)
 	}
 	
