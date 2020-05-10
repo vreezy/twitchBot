@@ -1,5 +1,6 @@
 const tmi = require('tmi.js');
 const dotenv = require('dotenv');
+const fs = require('fs');
 
 dotenv.config();
 
@@ -75,44 +76,70 @@ function slotMachine(slotValues, name) {
 
 	return `🎰 @${name}, zieht am Hebel und erhält ${slotView(slotValues)}.`
 }
+
 const arr = [];
 
-function getDummy() {
+// function getDummy() {
 	
-	return {
-		"badge-info": null,
-		"badges": {
-			"broadcaster": "1"
-		},
-		"color": null,
-		"display-name": "bot" + rollDice(100, 999),
-		"emotes": null,
-		"flags": null,
-		"id": "000",
-		"mod": false,
-		"room-id": "191308898",
-		"subscriber": false,
-		"tmi-sent-ts": "1588447795179",
-		"turbo": false,
-		"user-id": "191308898",
-		"user-type": null,
-		"emotes-raw": null,
-		"badge-info-raw": null,
-		"badges-raw": "broadcaster/1",
-		"username": "bot",
-		"message-type": "chat"
-	}
+// 	return {
+// 		"badge-info": null,
+// 		"badges": {
+// 			"broadcaster": "1"
+// 		},
+// 		"color": null,
+// 		"display-name": "bot" + rollDice(100, 999),
+// 		"emotes": null,
+// 		"flags": null,
+// 		"id": "000",
+// 		"mod": false,
+// 		"room-id": "191308898",
+// 		"subscriber": false,
+// 		"tmi-sent-ts": "1588447795179",
+// 		"turbo": false,
+// 		"user-id": "191308898",
+// 		"user-type": null,
+// 		"emotes-raw": null,
+// 		"badge-info-raw": null,
+// 		"badges-raw": "broadcaster/1",
+// 		"username": "bot",
+// 		"message-type": "chat"
+// 	}
+// }
+
+function logMessage(channel, tags, message) {
+   const messageString = `${new Date().toLocaleString("de-DE")} - ${channel} - ${tags["user-id"]} - ${tags["display-name"]}: ${message} \r\n`
+   fs.appendFile('logMessage.txt', messageString, function (err) {
+      if (err) {
+
+         //throw err;
+         console.log("log Message Error!")
+      } 
+      console.log('Saved!');
+   });
+}
+
+function logUser(tags) {
+   fs.appendFile('logUser.txt', JSON.stringify(tags) + "\r\n", function (err) {
+      if (err) {
+
+         //throw err;
+         console.log("log User Error!")
+      } 
+      console.log('Saved!');
+   });
 }
 
 client.connect();
 
 client.on('message', (channel, tags, message, self) => {
 	// Ignore echoed messages.
-	if(self) return;
+   if(self) return;
+   
+   logMessage(channel, tags, message);
 
 	// if(message.toLowerCase() === '!hello') {
 	// 	client.say(channel, `@${tags.username}, heya!`);
-    // }
+   // }
     
     if(message.toLowerCase() === '!discord') {
 		client.say(channel, `Hallo @${tags.username}, meinen Discord Server findest Du unter https://discord.gg/uat7ZSe`);
@@ -151,12 +178,13 @@ client.on('message', (channel, tags, message, self) => {
 	}
 
 	if(message.toLowerCase() === '!fight') {
+      logUser(tags);
 		arr.push(tags);
-		arr.push(getDummy());
-		arr.push(getDummy());
-		arr.push(getDummy());
-		arr.push(getDummy());
-		arr.push(getDummy());
+		// arr.push(getDummy());
+		// arr.push(getDummy());
+		// arr.push(getDummy());
+		// arr.push(getDummy());
+		// arr.push(getDummy());
 		// arr.push(getDummy());
 		// arr.push(getDummy());
 		// arr.push(getDummy());
