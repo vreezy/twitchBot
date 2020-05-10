@@ -106,7 +106,7 @@ function slotMachine(slotValues, name) {
 // }
 
 function logMessage(channel, tags, message) {
-   const messageString = `${new Date().toLocaleString("de-DE")} - ${channel} - ${tags["user-id"]} - ${tags["display-name"]}: ${message} \r\n`
+   const messageString = `${new Date().toLocaleString("de-DE")} - ${channel} - ${tags["user-id"]} - ${tags["display-name"]}: ${encodeURI(message)} \r\n`
    fs.appendFile('./logs/logMessage.txt', messageString, function (err) {
       if (err) {
          //throw err;
