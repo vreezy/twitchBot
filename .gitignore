@@ -1,3 +1,6 @@
 .autogit
 .env
 node_modules
+./logMessage.txt
+./logUser.txt
+logs
