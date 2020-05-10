@@ -117,7 +117,7 @@ function logMessage(channel, tags, message) {
 }
 
 function logUser(tags) {
-   fs.appendFile('logUser.txt', JSON.stringify(tags) + "\r\n", function (err) {
+   fs.appendFile('./logs/logUser.txt', JSON.stringify(tags) + "\r\n", function (err) {
       if (err) {
          //throw err;
          console.log("log User Error!")
