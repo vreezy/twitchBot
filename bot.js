@@ -4,11 +4,13 @@ const fs = require('fs');
 
 dotenv.config();
 
-
 // docu
 // https://dev.twitch.tv/docs/irc
 // get auth token:
 // https://twitchapps.com/tmi/
+
+// GLOBAL VARS
+var arr = [];
 
 const client = new tmi.Client({
 	options: { debug: true },
@@ -77,10 +79,7 @@ function slotMachine(slotValues, name) {
 	return `🎰 @${name}, zieht am Hebel und erhält ${slotView(slotValues)}.`
 }
 
-const arr = [];
-
 // function getDummy() {
-	
 // 	return {
 // 		"badge-info": null,
 // 		"badges": {
@@ -110,22 +109,20 @@ function logMessage(channel, tags, message) {
    const messageString = `${new Date().toLocaleString("de-DE")} - ${channel} - ${tags["user-id"]} - ${tags["display-name"]}: ${message} \r\n`
    fs.appendFile('logMessage.txt', messageString, function (err) {
       if (err) {
-
          //throw err;
          console.log("log Message Error!")
       } 
-      console.log('Saved!');
+      // console.log('Saved!');
    });
 }
 
 function logUser(tags) {
    fs.appendFile('logUser.txt', JSON.stringify(tags) + "\r\n", function (err) {
       if (err) {
-
          //throw err;
          console.log("log User Error!")
       } 
-      console.log('Saved!');
+      // console.log('Saved!');
    });
 }
 
@@ -137,29 +134,30 @@ client.on('message', (channel, tags, message, self) => {
    
    logMessage(channel, tags, message);
 
+   // original from Tutorial
 	// if(message.toLowerCase() === '!hello') {
 	// 	client.say(channel, `@${tags.username}, heya!`);
    // }
     
-    if(message.toLowerCase() === '!discord') {
-		client.say(channel, `Hallo @${tags.username}, meinen Discord Server findest Du unter https://discord.gg/uat7ZSe`);
-    }
+   if(message.toLowerCase() === '!discord') {
+   client.say(channel, `Hallo @${tags.username}, meinen Discord Server findest Du unter https://discord.gg/uat7ZSe`);
+   }
 
-    if(message.toLowerCase() === '!twitter') {
-		client.say(channel, `Hallo @${tags.username}, hier ist mein Twitter Account:  https://twitter.com/vreezyDE`);
-    }
+   if(message.toLowerCase() === '!twitter') {
+   client.say(channel, `Hallo @${tags.username}, hier ist mein Twitter Account:  https://twitter.com/vreezyDE`);
+   }
 
-    if(message.toLowerCase() === '!git' || message.toLowerCase() === '!github') {
-		client.say(channel, `Hallo @${tags.username}, hier ist mein Github Account: https://github.com/vreezy/`);
-    }
+   if(message.toLowerCase() === '!git' || message.toLowerCase() === '!github') {
+   client.say(channel, `Hallo @${tags.username}, hier ist mein Github Account: https://github.com/vreezy/`);
+   }
 
-    if(message.toLowerCase() === '!webseite' || message.toLowerCase() === '!website' || message.toLowerCase() === '!web') {
-		client.say(channel, `Hallo @${tags.username}, meine Webseite findest Du hier: https://vreezy.de/`);
-    }
+   if(message.toLowerCase() === '!webseite' || message.toLowerCase() === '!website' || message.toLowerCase() === '!web') {
+   client.say(channel, `Hallo @${tags.username}, meine Webseite findest Du hier: https://vreezy.de/`);
+   }
 
-    if(message.toLowerCase() === '!instagram' || message.toLowerCase() === '!insta') {
-		client.say(channel, `Hallo @${tags.username}, hier ist mein Instagram Account : https://www.instagram.com/vreezy.de/`);
-	}
+   if(message.toLowerCase() === '!instagram' || message.toLowerCase() === '!insta') {
+      client.say(channel, `Hallo @${tags.username}, hier ist mein Instagram Account : https://www.instagram.com/vreezy.de/`);
+   }
 	
 	if(message.toLowerCase() === '!dice' || message.toLowerCase() === '!dice6') {
 		client.say(channel, `🎲 @${tags.username}, würfelt eine ${rollDice(1, 6)}`);
@@ -178,22 +176,11 @@ client.on('message', (channel, tags, message, self) => {
 	}
 
 	if(message.toLowerCase() === '!fight') {
+      console.log(tags);
       logUser(tags);
 		arr.push(tags);
-		// arr.push(getDummy());
-		// arr.push(getDummy());
-		// arr.push(getDummy());
-		// arr.push(getDummy());
-		// arr.push(getDummy());
-		// arr.push(getDummy());
-		// arr.push(getDummy());
-		// arr.push(getDummy());
-		console.log(tags)
 	}
-	
-
 });
-	
 
 var express = require('express');
 var app = express();
@@ -202,7 +189,13 @@ app.get('/', function (req, res) {
 	res.header('Access-Control-Allow-Origin', "*");
 	res.header('Access-Control-Allow-Headers', "*");
 	res.json(arr);
-	// arr = []
+});
+
+app.get('/reset', function (req, res) {
+	res.header('Access-Control-Allow-Origin', "*");
+   res.header('Access-Control-Allow-Headers', "*");
+   arr = [];
+	res.json({status: "success"});
 });
 
 app.listen(8080, function () {
